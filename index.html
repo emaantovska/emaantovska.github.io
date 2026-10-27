@@ -131,8 +131,58 @@
   .body-inner ul { margin: 0; padding-left: 20px; }
   .body-inner li { margin-bottom: 6px; }
   .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-  .shots img { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; }
+  .shots img, .shots video { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; background: #0B1324; }
+  .code {
+    max-height: 280px; overflow: auto; margin: 8px 0 0;
+    background: #0B1324; border: 1px solid var(--rule); border-radius: 10px;
+    padding: 16px 18px; font: 14px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color: #CFE0FF; white-space: pre; tab-size: 2;
+  }
+  .code::-webkit-scrollbar { width: 10px; height: 10px; }
+  .code::-webkit-scrollbar-thumb { background: #2A3D63; border-radius: 10px; }
   .body-inner .btn { margin-top: 18px; }
+
+
+  /* Code editor window */
+  .script-block { margin-top: 30px; padding-top: 6px; border-top: 1px solid var(--rule); }
+  .script-block p code { font: 14px ui-monospace, Menlo, Consolas, monospace; background: #0B1324; padding: 1px 6px; border-radius: 5px; color: #CFE0FF; }
+  .editor { margin-top: 14px; border: 1px solid #2A3D63; border-radius: 12px; overflow: hidden; background: #0A1220; box-shadow: 0 20px 40px -24px rgba(0,0,0,.7); }
+  .editor-bar { display: flex; align-items: flex-end; gap: 14px; padding: 0 12px; background: #111C31; border-bottom: 1px solid #22345A; }
+  .dots { display: flex; gap: 6px; padding: 14px 0; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; background: #FF6B6B; }
+  .dots i:nth-child(2) { background: #FCC419; }
+  .dots i:nth-child(3) { background: #51CF66; }
+  .editor-tabs { display: flex; gap: 2px; overflow-x: auto; }
+  .editor-tab {
+    font: 13px ui-monospace, Menlo, Consolas, monospace; color: var(--muted);
+    background: transparent; border: 0; border-radius: 8px 8px 0 0;
+    padding: 9px 14px; cursor: pointer; white-space: nowrap;
+    transition: background .2s, color .2s;
+  }
+  .editor-tab:hover { color: var(--ink); }
+  .editor-tab.active { background: #0A1220; color: var(--ink); box-shadow: inset 0 2px 0 var(--accent); }
+  .editor-body {
+    max-height: 420px; overflow: auto; padding: 14px 0;
+    font: 13.5px/1.65 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #CFE0FF;
+    counter-reset: ln; transition: opacity .2s;
+  }
+  .editor-body.fading { opacity: 0; }
+  .editor-body .ln { display: block; white-space: pre; padding: 0 18px 0 0; }
+  .editor-body .ln::before {
+    counter-increment: ln; content: counter(ln);
+    display: inline-block; width: 3.2em; margin-right: 16px; padding-right: 10px;
+    text-align: right; color: #3E5079; border-right: 1px solid #1C2A47;
+  }
+  .editor-body::-webkit-scrollbar { width: 10px; height: 10px; }
+  .editor-body::-webkit-scrollbar-thumb { background: #2A3D63; border-radius: 10px; }
+  .tk-scene { color: #FFD43B; font-weight: 700; }
+  .tk-cmd { color: #74C0FC; }
+  .tk-kw { color: #DA77F2; font-weight: 700; }
+  .tk-name { color: #FF8787; font-weight: 700; }
+  .tk-comment { color: #5C7099; font-style: italic; }
+  .tk-str { color: #8CE99A; }
+  .tk-tag { color: #FFA94D; }
+  .tk-num { color: #F783AC; }
 
   /* Experience */
   .jobs { display: grid; gap: 0; border-top: 1px solid var(--rule); }
@@ -229,10 +279,119 @@
             <li>Ran 100+ rounds of playtests with 10 testers, logging feedback and bugs, prioritizing fixes, and iterating on pacing and choices before each release.</li>
           </ul>
           <div class="shots">
-            <img src="images/ysc-1.jpg" alt="Scene from Your Second Choice">
-            <img src="images/ysc-2.jpg" alt="Scene from Your Second Choice">
+            <video src="images/ysc-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <video src="images/ysc-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
           </div>
           <a class="btn btn--primary" href="http://episodeinteractive.com/s/5561537734672384" target="_blank" rel="noopener">Play on Episode</a>
+          <div class="script-block">
+            <h4>Under the hood: Episode 2 script</h4>
+            <p>Two excerpts from the script I wrote in Episode's scripting language. <strong>The cold open</strong> positions the camera, layers overlays, applies a color filter, and stages both characters with their animations before the first line of dialogue. <strong>The Q&amp;A menu</strong> uses a <code>label</code> and <code>goto</code> loop, so players can ask as many questions as they like before choosing to move on.</p>
+            <div class="editor">
+              <div class="editor-bar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <div class="editor-tabs" role="tablist">
+                  <button class="editor-tab active" role="tab" data-src="code-coldopen">ep2_cold_open.txt</button>
+                  <button class="editor-tab" role="tab" data-src="code-qanda">ep2_qanda_menu.txt</button>
+                </div>
+              </div>
+              <div class="editor-body" tabindex="0" aria-label="Episode script excerpt"></div>
+            </div>
+<script type="text/plain" id="code-coldopen">
+
+#########################################
+# DREAM
+#########################################
+EXT. CLIFFSIDE CAR BACKFACING SUNRISE - NIGHT
+@pan to zone 1 in 0
+@zoom on 730 429 to 100% in 0
+@KTEEN changes into KTEEN-VIEW
+@PTEEN changes into PTEEN-VIEW
+@overlay VIEWPOINT CAR create
+@overlay VIEWPOINT CAR shifts to -4 -6 in zone 1
+@overlay VIEWPOINT CAR scales to 2.521 2.521
+@overlay VIEWPOINT CAR rotates 0 anchor point 0.0 0.0
+@overlay VIEWPOINT CAR to layer 1
+@overlay VIEWPOINT CAR opacity 1.00
+# FILTER: Rose Goggles
+
+@set hsl -15 52 7 colorize with blendMode OVERLAY to 55%
+
+
+@KTEEN spot 0.579 235 276 in zone 1 at layer 0 and KTEEN faces left and KTEEN starts idle_sit_neutral_loop_rear
+@PTEEN spot 0.602 171 264 in zone 1 at layer 0 and PTEEN faces left and PTEEN starts idle_sit_neutral_loop_rear
+sound music_dreamwalk
+@transition fade in black 1
+@pause for 4
+
+EXT. VIEWPOINT FRONT
+@zoom on 772 241 to 140% in 0
+@KTEEN changes into KTEEN-VIEW
+@PTEEN changes into PTEEN-VIEW
+@KTEEN spot 0.579 309 317 in zone 1 at layer 1 and KTEEN faces right and KTEEN starts idle_sit_neutral_loop
+@PTEEN spot 0.602 59 326 in zone 2 at layer 0 and PTEEN faces right and PTEEN starts idle_sit_leanback_neutral_loop
+@pause for 1
+
+@KTEEN starts talk_sit_armscrossed_angry_loop
+@speechbubble is 201 246 to 81% with tail_top_left
+        KATIE
+    I cannot believe you got your licence before me.
+@PAYTON spot 1.250 79 28 in zone 1 at layer 0 AND PAYTON faces left
+@pause for 0.3
+@PTEEN starts talk_sit_flirt_squint
+@speechbubble is 141 239 to 81% with tail_top_right
+        PAYTON
+    And I cannot believe you failed your driving test.
+@pause for 0.3
+@KTEEN starts talk_sit_accuse_angry
+</script>
+<script type="text/plain" id="code-qanda">
+label QandA
+@speechbubble is 161 249 to 75%
+        NARRATOR
+    What questions would you like to ask?
+
+choice
+"When does this story update?" {
+@speechbubble is 161 270 to 86%
+        NARRATOR
+    I update when I can! I'm a one person show so I don't have a set schedule, but I try my best to get episodes out as consistently as possible!
+
+
+goto QandA
+
+} "How many episodes will this story have?" {
+@speechbubble is 161 270 to 86%
+        NARRATOR
+    Honestly? I'm still figuring that out. This story has a lot to tell and I don't want to rush it.
+
+goto QandA
+
+} "Will there be choices that affect the ending?" {
+@speechbubble is 161 270 to 86%
+        NARRATOR
+    Let's just say some choices will matter more than others. Choose wisely.
+
+goto QandA
+
+} "Can I recustomize my characters?" {
+@speechbubble is 161 270 to 86%
+        NARRATOR
+    Yep! Every 15 episodes you'll get to go back in and change things up completely if you want. Or keep everything the same - totally up to you. The choice is yours!.
+
+goto QandA
+
+} <GREEN> "I'm done asking questions." {
+@speechbubble is 161 270 to 86%
+        NARRATOR
+    Are you sure you're done asking questions?
+choice
+<GREEN>"Yes, I'm done." {
+} "No, take me back." {
+goto QandA
+}}
+@speechbubble is 161 270 to 86%
+</script>
+          </div>
         </div></div></div>
       </article>
 
@@ -263,8 +422,8 @@
             <li>Tested before release, tuning difficulty and controls based on playtester feedback.</li>
           </ul>
           <div class="shots">
-            <img src="images/sprinkle-1.jpg" alt="Sprinkle Saver gameplay">
-            <img src="images/sprinkle-2.jpg" alt="Sprinkle Saver gameplay">
+            <video src="images/sprinkle-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <video src="images/sprinkle-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
           </div>
           <a class="btn btn--primary" href="https://emaa99.github.io/Sprinkle-Saver-finalgame/" target="_blank" rel="noopener">Play the game</a>
         </div></div></div>
@@ -275,7 +434,7 @@
         <button class="card-head" aria-expanded="false">
           <div class="thumb" style="--g: linear-gradient(135deg, #C2255C, #FFA8A8)">
             <span>L</span>
-            <img src="images/loreal.jpeg" alt="">
+            <img src="images/loreal.jpg" alt="">
           </div>
           <div class="head-text">
             <span class="tag">AI web app · Global Career Accelerator</span>
@@ -292,6 +451,7 @@
           <ul>
             <li>Built routine generation and follow-up Q&amp;A on an AI backend with controlled prompts and secure API communication.</li>
             <li>Added dynamic product search and right-to-left language support for international users.</li>
+            <li>Note: the AI chat is currently offline while I move it to a new API; the product browser and search still work.</li>
           </ul>
           <a class="btn btn--primary" href="https://emaant44.github.io/09-prj-loreal-routine-builder/" target="_blank" rel="noopener">Open the project</a>
         </div></div></div>
@@ -302,7 +462,7 @@
         <button class="card-head" aria-expanded="false">
           <div class="thumb" style="--g: linear-gradient(135deg, #0B7285, #63E6BE)">
             <span>I</span>
-            <img src="images/intel.jpeg" alt="">
+            <img src="images/intel.jpg" alt="">
           </div>
           <div class="head-text">
             <span class="tag">Website · Global Career Accelerator</span>
@@ -329,7 +489,7 @@
         <button class="card-head" aria-expanded="false">
           <div class="thumb" style="--g: linear-gradient(135deg, #1A1B4B, #5C7CFA)">
             <span>N</span>
-            <img src="images/nasa.png" alt="">
+            <img src="images/nasa.jpg" alt="">
           </div>
           <div class="head-text">
             <span class="tag">Web app · Global Career Accelerator</span>
@@ -345,8 +505,9 @@
           </dl>
           <ul>
             <li>Fetched and displayed real-time NASA images, with gallery loading, modal views, and API key security.</li>
+            <li>Added error handling that detects when NASA's service sends placeholder images and shows a clear message instead. (NASA's image service is currently doing this for every date.)</li>
           </ul>
-          <a class="btn btn--primary" href="https://emaa99.github.io/07-nasa-space-explorer/" target="_blank" rel="noopener">Open the project</a>
+          <a class="btn btn--primary" href="https://emaantovska.github.io/nasa-space-explorer/" target="_blank" rel="noopener">Open the project</a>
         </div></div></div>
       </article>
 
@@ -382,15 +543,65 @@
 </footer>
 
 <script>
-  // Hide any picture that hasn't been uploaded yet (the colored tile with initials shows instead)
-  document.querySelectorAll('img').forEach(img => {
+  // Hide any picture or video that hasn't been uploaded yet (the colored tile with initials shows instead)
+  document.querySelectorAll('img, video').forEach(el => {
     const drop = () => {
-      const shots = img.closest('.shots');
-      img.remove();
-      if (shots && !shots.querySelector('img')) shots.remove();
+      const shots = el.closest('.shots');
+      el.remove();
+      if (shots && !shots.querySelector('img, video')) shots.remove();
     };
-    if (img.complete && img.naturalWidth === 0) drop();
-    else img.addEventListener('error', drop);
+    // If a .jpg is missing, try the same name as .png (and the other way round) before giving up
+    const retry = () => {
+      if (el.tagName === 'IMG' && !el.dataset.retried) {
+        el.dataset.retried = '1';
+        const src = el.getAttribute('src');
+        const alt = /\.jpg$/i.test(src) ? src.replace(/\.jpg$/i, '.png') : src.replace(/\.png$/i, '.jpg');
+        if (alt !== src) { el.src = alt; return; }
+      }
+      drop();
+    };
+    if (el.tagName === 'IMG' && el.complete && el.naturalWidth === 0) retry();
+    else if (el.tagName === 'VIDEO' && el.error) drop();
+    else el.addEventListener('error', retry);
+  });
+
+  // Episode script viewer: simple syntax colors + file tabs
+  const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const highlightLine = raw => {
+    const t = raw.trim();
+    if (!t) return '';
+    if (t.startsWith('#')) return `<span class="tk-comment">${esc(raw)}</span>`;
+    if (/^(INT|EXT)\./.test(t)) return `<span class="tk-scene">${esc(raw)}</span>`;
+    if (/^\s{6,}[A-Z][A-Z0-9 ()]*$/.test(raw)) return `<span class="tk-name">${esc(raw)}</span>`;
+    let h = esc(raw);
+    h = h.replace(/&quot;|"([^"]*)"/g, m => `<span class="tk-str">${m}</span>`);
+    h = h.replace(/&lt;[A-Z]+(?::\d+)?&gt;/g, m => `<span class="tk-tag">${m}</span>`);
+    if (t.startsWith('@')) {
+      h = h.replace(/^(\s*)(@\w+)/, '$1<span class="tk-cmd">$2</span>');
+      h = h.replace(/\b(in|to|at|and|AND|with|faces|starts|spot|zone|layer|create|opacity|shifts|scales|rotates|fade|out|black|for)\b/g, '<span class="tk-cmd">$1</span>');
+      return h;
+    }
+    h = h.replace(/^(\s*)(label|goto|choice)\b/, '$1<span class="tk-kw">$2</span>');
+    if (/^(sound|music)\b/.test(t)) h = h.replace(/^(\s*)(\w+)/, '$1<span class="tk-cmd">$2</span>');
+    return h;
+  };
+  document.querySelectorAll('.editor').forEach(ed => {
+    const body = ed.querySelector('.editor-body');
+    const show = id => {
+      const src = document.getElementById(id);
+      if (!src) return;
+      const lines = src.textContent.replace(/^\n+|\s+$/g, '').split('\n');
+      body.innerHTML = lines.map(l => `<span class="ln">${highlightLine(l) || ' '}</span>`).join('');
+      body.scrollTop = 0;
+    };
+    ed.querySelectorAll('.editor-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        ed.querySelectorAll('.editor-tab').forEach(t => t.classList.toggle('active', t === tab));
+        body.classList.add('fading');
+        setTimeout(() => { show(tab.dataset.src); body.classList.remove('fading'); }, 180);
+      });
+    });
+    show(ed.querySelector('.editor-tab.active').dataset.src);
   });
 
   // Expand / collapse project cards
