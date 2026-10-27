@@ -132,6 +132,14 @@
   .body-inner li { margin-bottom: 6px; }
   .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
   .shots img, .shots video { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; background: #0B1324; }
+  .shots:has(> :only-child) { grid-template-columns: 1fr; }
+  /* Phone recordings: shown side by side in phone-shaped frames */
+  .shots--phone { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .shots--phone video {
+    width: 230px; max-width: 44%; aspect-ratio: 9 / 19.5; object-fit: cover;
+    border-radius: 26px; border: 6px solid #1E2B45;
+    box-shadow: 0 0 0 1px #33497a, 0 18px 40px -18px rgba(0,0,0,.8);
+  }
   .code {
     max-height: 280px; overflow: auto; margin: 8px 0 0;
     background: #0B1324; border: 1px solid var(--rule); border-radius: 10px;
@@ -278,7 +286,7 @@
             <li>Designed branching choice systems whose consequences carry across episodes, and scripted scenes with custom overlays, background art, and animation sequencing.</li>
             <li>Ran 100+ rounds of playtests with 10 testers, logging feedback and bugs, prioritizing fixes, and iterating on pacing and choices before each release.</li>
           </ul>
-          <div class="shots">
+          <div class="shots shots--phone">
             <video src="images/ysc-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
             <video src="images/ysc-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
           </div>
