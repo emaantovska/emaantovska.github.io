@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ema Antovska · Portfolio</title>
+<meta name="description" content="Ema Antovska: games, interactive stories, and web projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F1A2E;
+    --panel: #16233D;
+    --panel-2: #1B2A48;
+    --ink: #E8EDF5;
+    --muted: #9AA8C0;
+    --rule: #24365A;
+    --accent: #8FB4FF;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Source Serif 4", Georgia, serif;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 18px/1.6 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:hover { color: #fff; }
+  .wrap { width: min(920px, 100% - 32px); margin: 0 auto; }
+
+  /* Top bar */
+  .top {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(15, 26, 46, .82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+  .brand { font: 700 18px var(--display); color: var(--ink); text-decoration: none; }
+  .top nav { display: flex; gap: 20px; font: 500 15px var(--display); }
+  .top nav a { color: var(--muted); text-decoration: none; transition: color .2s; }
+  .top nav a:hover { color: var(--ink); }
+
+  /* Intro */
+  .intro { padding: 88px 0 56px; }
+  .eyebrow { font: 500 14px var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font: 700 clamp(40px, 7vw, 68px)/1.04 var(--display); margin: 0 0 22px; letter-spacing: -.02em; }
+  .lede { font-size: 20px; color: var(--muted); max-width: 640px; margin: 0 0 30px; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 500 15px var(--display); text-decoration: none;
+    padding: 11px 18px; border-radius: 999px;
+    border: 1px solid var(--rule); color: var(--ink); background: var(--panel);
+    transition: transform .2s var(--ease), border-color .2s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--ink); }
+  .btn--primary { background: var(--accent); color: #0F1A2E; border-color: var(--accent); }
+  .btn--primary:hover { background: #fff; color: #0F1A2E; border-color: #fff; }
+
+  section { padding: 40px 0; }
+  h2 { font: 700 30px var(--display); margin: 0 0 8px; letter-spacing: -.01em; }
+  .section-note { color: var(--muted); margin: 0 0 28px; }
+
+  /* Project cards */
+  .projects { display: grid; gap: 18px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s var(--ease), box-shadow .25s;
+  }
+  .card:hover { border-color: #33497a; }
+  .card.open { border-color: var(--accent); box-shadow: 0 18px 50px -24px rgba(143, 180, 255, .45); }
+  .card-head {
+    display: grid; grid-template-columns: 200px 1fr; gap: 0;
+    width: 100%; padding: 0; border: 0; background: none; color: inherit;
+    text-align: left; cursor: pointer; font: inherit;
+  }
+  .thumb {
+    position: relative; min-height: 150px;
+    background: var(--g, linear-gradient(135deg, #3B5BDB, #8FB4FF));
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .thumb span { font: 700 34px var(--display); color: rgba(255,255,255,.9); }
+  .thumb img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    transition: transform .5s var(--ease);
+  }
+  .card:hover .thumb img { transform: scale(1.05); }
+  .head-text { padding: 22px 24px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+  .tag { font: 500 13px var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .card h3 { font: 700 24px var(--display); margin: 0; }
+  .summary { color: var(--muted); margin: 0; font-size: 17px; }
+  .more {
+    margin-top: 6px; font: 500 14px var(--display); color: var(--ink);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .more i {
+    display: inline-block; width: 9px; height: 9px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-3px);
+    transition: transform .3s var(--ease);
+  }
+  .card.open .more i { transform: rotate(225deg) translate(-2px, -1px); }
+
+  /* Smooth expand: grid rows 0fr -> 1fr */
+  .card-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease); }
+  .card.open .card-body { grid-template-rows: 1fr; }
+  .card-body > div { overflow: hidden; }
+  .body-inner {
+    padding: 4px 28px 28px;
+    border-top: 1px solid var(--rule);
+    opacity: 0; transform: translateY(-8px);
+    transition: opacity .35s .05s, transform .45s var(--ease);
+  }
+  .card.open .body-inner { opacity: 1; transform: none; }
+  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 22px 0 6px; font-size: 16px; }
+  .meta dt { font: 500 14px var(--display); color: var(--muted); padding-top: 2px; }
+  .meta dd { margin: 0; }
+  .body-inner h4 { font: 700 18px var(--display); margin: 22px 0 6px; }
+  .body-inner p { margin: 0 0 10px; }
+  .body-inner ul { margin: 0; padding-left: 20px; }
+  .body-inner li { margin-bottom: 6px; }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .shots img { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; }
+  .body-inner .btn { margin-top: 18px; }
+
+  /* Experience */
+  .jobs { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .job { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+  .job h3 { font: 700 19px var(--display); margin: 0; }
+  .job .when { font: 500 14px var(--display); color: var(--muted); white-space: nowrap; }
+  .job p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 17px; }
+
+  footer { padding: 48px 0 64px; color: var(--muted); font-size: 16px; }
+  footer .wrap { border-top: 1px solid var(--rule); padding-top: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    .top nav { gap: 14px; font-size: 14px; }
+    .top nav .hide-sm { display: none; }
+    .intro { padding: 56px 0 36px; }
+    .card-head { grid-template-columns: 1fr; }
+    .thumb { min-height: 150px; }
+    .head-text { padding: 18px 20px; }
+    .body-inner { padding: 4px 20px 22px; }
+    .shots { grid-template-columns: 1fr; }
+    .job { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">Ema Antovska</a>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#experience" class="hide-sm">Experience</a>
+      <a href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="intro reveal">
+    <p class="eyebrow">Games · Interactive stories · Web</p>
+    <h1>Hi, I'm Ema.</h1>
+    <p class="lede">I'm a junior at <strong>Columbia University</strong> studying Financial Economics with a minor in Computer Science. I make games and interactive stories, and I love the part where an idea becomes something people can actually play: planning it, building it, testing it with players, and fixing what they run into.</p>
+    <div class="buttons">
+      <a class="btn btn--primary" href="#projects">See my projects</a>
+      <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+      <a class="btn" href="mailto:emaantovska2005@gmail.com">Email</a>
+      <a class="btn" href="https://www.linkedin.com/in/emaantovska" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="reveal">Projects</h2>
+    <p class="section-note reveal">Click a project to read more.</p>
+
+    <div class="projects">
+
+      <!-- Your Second Choice -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #7048E8, #E599F7)">
+            <span>YSC</span>
+            <img src="images/ysc.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Interactive story · Episode</span>
+            <h3>Your Second Choice</h3>
+            <p class="summary">Two ex-best friends, one fake relationship, and two years of unfinished business. My own novel, rebuilt as a 50-episode branching story.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Role</dt><dd>Producer, writer, narrative designer, scripter</dd>
+            <dt>Tools</dt><dd>Episode scripting, custom overlays, background art, animation sequencing</dd>
+            <dt>Dates</dt><dd>February 2026 – present</dd>
+          </dl>
+          <h4>The story</h4>
+          <p>Sophomore year, Katie finally writes her best friend Payton a letter confessing she loves him, on the same day he starts dating the head cheerleader. The friendship falls apart. Two years later, Payton gets dumped in front of the whole school and comes to Katie with a deal: be his fake girlfriend so his ex gets jealous enough to take him back, and in return he'll sit for the portrait Katie needs to pass advanced art. The rules are simple. Neither of them is very good at following them.</p>
+          <h4>What I did</h4>
+          <ul>
+            <li>Planned and managed production from concept to playable build, setting milestones for writing, scripting, art, and testing across 50 episodes.</li>
+            <li>Adapted my own 48-chapter novel into an interactive format, keeping its switching point of view between Katie and Payton.</li>
+            <li>Designed branching choice systems whose consequences carry across episodes, and scripted scenes with custom overlays, background art, and animation sequencing.</li>
+            <li>Ran 100+ rounds of playtests with 10 testers, logging feedback and bugs, prioritizing fixes, and iterating on pacing and choices before each release.</li>
+          </ul>
+          <div class="shots">
+            <img src="images/ysc-1.jpg" alt="Scene from Your Second Choice">
+            <img src="images/ysc-2.jpg" alt="Scene from Your Second Choice">
+          </div>
+          <a class="btn btn--primary" href="http://episodeinteractive.com/s/5561537734672384" target="_blank" rel="noopener">Play on Episode</a>
+        </div></div></div>
+      </article>
+
+      <!-- Sprinkle Saver -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #1C7ED6, #66D9E8)">
+            <span>SS</span>
+            <img src="images/sprinkle.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Browser game · charity: water</span>
+            <h3>Sprinkle Saver</h3>
+            <p class="summary">A browser arcade platformer for the charity: water mission, taken from concept to launch on my own.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Role</dt><dd>Game designer and developer (solo)</dd>
+            <dt>Tools</dt><dd>JavaScript, HTML5, CSS</dd>
+            <dt>Dates</dt><dd>June – August 2025</dd>
+          </dl>
+          <h4>What I did</h4>
+          <ul>
+            <li>Defined the core gameplay loop and wireframed the levels and UI.</li>
+            <li>Built the game logic in JavaScript, animated sprites, and designed event-driven feedback with HTML5 and modular CSS.</li>
+            <li>Tested before release, tuning difficulty and controls based on playtester feedback.</li>
+          </ul>
+          <div class="shots">
+            <img src="images/sprinkle-1.jpg" alt="Sprinkle Saver gameplay">
+            <img src="images/sprinkle-2.jpg" alt="Sprinkle Saver gameplay">
+          </div>
+          <a class="btn btn--primary" href="https://emaa99.github.io/Sprinkle-Saver-finalgame/" target="_blank" rel="noopener">Play the game</a>
+        </div></div></div>
+      </article>
+
+      <!-- L'Oreal -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #C2255C, #FFA8A8)">
+            <span>L</span>
+            <img src="images/loreal.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">AI web app · Global Career Accelerator</span>
+            <h3>L'Oréal Routine Builder</h3>
+            <p class="summary">A product browser and AI chatbot that builds a personal skincare routine and answers follow-up questions.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Tools</dt><dd>JavaScript, OpenAI API, Cloudflare Workers</dd>
+            <dt>Dates</dt><dd>June – August 2025</dd>
+          </dl>
+          <ul>
+            <li>Built routine generation and follow-up Q&amp;A on an AI backend with controlled prompts and secure API communication.</li>
+            <li>Added dynamic product search and right-to-left language support for international users.</li>
+          </ul>
+          <a class="btn btn--primary" href="https://emaant44.github.io/09-prj-loreal-routine-builder/" target="_blank" rel="noopener">Open the project</a>
+        </div></div></div>
+      </article>
+
+      <!-- Intel -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #0B7285, #63E6BE)">
+            <span>I</span>
+            <img src="images/intel.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Website · Global Career Accelerator</span>
+            <h3>Intel Sustainability Journey</h3>
+            <p class="summary">A responsive, interactive timeline of Intel's sustainability milestones.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Tools</dt><dd>HTML, CSS, JavaScript, Chrome DevTools</dd>
+            <dt>Dates</dt><dd>June – August 2025</dd>
+          </dl>
+          <ul>
+            <li>Built a timeline that switches from horizontal to vertical layouts across screen sizes, with interactive milestone cards.</li>
+            <li>Tested for cross-browser compatibility and accessibility using DevTools.</li>
+          </ul>
+          <a class="btn btn--primary" href="https://emaantovska.github.io/03-prj-intel-localization/" target="_blank" rel="noopener">Open the project</a>
+        </div></div></div>
+      </article>
+
+      <!-- NASA -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #1A1B4B, #5C7CFA)">
+            <span>N</span>
+            <img src="images/nasa.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Web app · Global Career Accelerator</span>
+            <h3>NASA Space Explorer</h3>
+            <p class="summary">A single-page app that pulls NASA's Astronomy Picture of the Day into a browsable gallery.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Tools</dt><dd>JavaScript, NASA APOD API</dd>
+            <dt>Dates</dt><dd>June – August 2025</dd>
+          </dl>
+          <ul>
+            <li>Fetched and displayed real-time NASA images, with gallery loading, modal views, and API key security.</li>
+          </ul>
+          <a class="btn btn--primary" href="https://emaa99.github.io/07-nasa-space-explorer/" target="_blank" rel="noopener">Open the project</a>
+        </div></div></div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2 class="reveal">Experience</h2>
+    <p class="section-note reveal">The full details are on my <a href="resume.pdf" target="_blank" rel="noopener">resume</a>.</p>
+    <div class="jobs">
+      <div class="job reveal">
+        <h3>Consultant · Black Flow Reality</h3><span class="when">Sep 2026 – present</span>
+        <p>Through Project V Solutions Consulting at Columbia: testing pre-release features of an AR and neural-interface headset, documenting issues and user feedback for the product roadmap, and coordinating deliverables across a 20-person team.</p>
+      </div>
+      <div class="job reveal">
+        <h3>Tax Intern, Transfer Pricing · PwC Macedonia</h3><span class="when">Jun – Aug 2026</span>
+        <p>Prepared benchmarking studies and supported audits and documentation reviews on client deadlines.</p>
+      </div>
+      <div class="job reveal">
+        <h3>Strategy Analyst · Autoview</h3><span class="when">Jan – May 2025</span>
+        <p>Defined funnel and retention metrics to measure whether new features changed user behavior.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Ema Antovska · New York, NY</span>
+    <span><a href="mailto:emaantovska2005@gmail.com">emaantovska2005@gmail.com</a></span>
+  </div>
+</footer>
+
+<script>
+  // Hide any picture that hasn't been uploaded yet (the colored tile with initials shows instead)
+  document.querySelectorAll('img').forEach(img => {
+    const drop = () => {
+      const shots = img.closest('.shots');
+      img.remove();
+      if (shots && !shots.querySelector('img')) shots.remove();
+    };
+    if (img.complete && img.naturalWidth === 0) drop();
+    else img.addEventListener('error', drop);
+  });
+
+  // Expand / collapse project cards
+  document.querySelectorAll('.card-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const card = head.closest('.card');
+      const open = !card.classList.contains('open');
+      card.classList.toggle('open', open);
+      head.setAttribute('aria-expanded', open);
+      head.querySelector('.more').firstChild.textContent = open ? 'Close ' : 'Read more ';
+    });
+  });
+
+  // Fade sections in as you scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
