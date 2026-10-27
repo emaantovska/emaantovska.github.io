@@ -193,6 +193,19 @@
   .tk-tag { color: #FFA94D; }
   .tk-num { color: #F783AC; }
 
+
+  /* Zombies feature card */
+  .card--feature { border-color: #2F6B3F; }
+  .card--feature .tag { color: #8CE99A; }
+  .card--feature.open { border-color: #69DB7C; box-shadow: 0 18px 50px -24px rgba(105, 219, 124, .45); }
+  .shots--art { grid-template-columns: repeat(3, 1fr); }
+  .shots--art img { aspect-ratio: 4 / 3; object-fit: cover; }
+  .map-fig figcaption { font-size: 15px; color: var(--muted); margin-top: 8px; }
+  .flow { margin: 0; padding-left: 22px; }
+  .flow li { margin-bottom: 8px; }
+  .map-fig { margin: 18px 0 0; }
+  .map-fig img { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; }
+
   /* Experience */
   .jobs { display: grid; gap: 0; border-top: 1px solid var(--rule); }
   .job { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
@@ -217,6 +230,7 @@
     .head-text { padding: 18px 20px; }
     .body-inner { padding: 4px 20px 22px; }
     .shots { grid-template-columns: 1fr; }
+    .shots--art { grid-template-columns: 1fr 1fr; }
     .job { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -329,6 +343,72 @@
     <p class="section-note reveal">Click a project to read more.</p>
 
     <div class="projects">
+
+      <!-- Zombies concept -->
+      <article class="card card--feature reveal" id="zombies">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #2B8A3E, #0B3D1E 70%, #000)">
+            <span>Z</span>
+            <img src="images/zombies-cover.jpg" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Original Zombies map concept · Design document</span>
+            <h3>Fossil Record</h3>
+            <p class="summary">A glowing rock dug up from the ruins of Shangri-La is sent to a natural history museum for study. Nobody realizes it's Element 115, until a lab accident supercharges it and every fossil in the building comes back to life.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Type</dt><dd>Original Zombies map and main quest concept</dd>
+            <dt>Players</dt><dd>1–4, co-op</dd>
+            <dt>Setting</dt><dd>A natural history museum, connected to the story of Shangri-La</dd>
+          </dl>
+
+          <div class="shots shots--art">
+            <img src="images/zombies-art-1.jpg" alt="Concept art: the museum">
+            <img src="images/zombies-art-2.jpg" alt="Concept art: the raptors">
+            <img src="images/zombies-art-3.jpg" alt="Concept art: the T. rex">
+          </div>
+
+          <h4>The story</h4>
+          <p>Years after the events of Shangri-La, an archaeological team excavating the ruins of the hidden jungle temple uncovers a strange glowing rock buried in the rubble. It's a leftover shard of the Element 115 meteor, but nobody on the team knows that. To them, it's an unidentified mineral that gives off a faint, steady energy.</p>
+          <p>The discovery makes headlines around the world, and the media starts calling it a "healing stone." The shard is shipped to a natural history museum so scientists can study it.</p>
+          <p>Then something goes wrong in the research lab. A piece of equipment malfunctions and fires straight into the shard. Nothing seems to happen, so everyone moves on. But the Element 115 has been supercharged, and its energy slowly spreads through the museum, waking up every fossil and skeleton in the building. Bone grows flesh again, and the exhibits start to move.</p>
+          <p>Zombies fans will recognize the glowing rock the moment they see it. The scientists have no idea what they've brought inside, and players do. That gap is what makes the opening tense.</p>
+
+          <h4>Map layout</h4>
+          <p>Players fight their way from the museum entrance to the lab where it all started. The four main rooms form the main path, and each one introduces a bigger, more dangerous threat. As in any Zombies map, players buy doors with points to open new areas. Side rooms branch off the main path for perks, the Mystery Box, and quest items, and loops let players circle the map instead of getting trapped in a dead end.</p>
+          <ol class="flow">
+            <li><strong>Entrance Hall.</strong> The starting room. Human skeletons from the anthropology exhibits have been reanimated as zombies. A side door leads to the <em>Security Office</em>.</li>
+            <li><strong>Raptor Gallery.</strong> A bigger hall where raptors burst out of their displays. They are faster than zombies and attack in packs. Side rooms: the <em>Gift Shop</em> and the <em>Fossil Prep Room</em>.</li>
+            <li><strong>Great Hall.</strong> The museum's centerpiece room, home to a towering T. rex skeleton, with the <em>Planetarium</em> off to one side. An upper balcony loops all the way around the T. rex, so players can keep moving during the boss fight. This is where the T. rex comes to life, with raptors attacking alongside it.</li>
+            <li><strong>Research Lab.</strong> The source of the outbreak, where the supercharged shard is kept. It stays sealed until players have built the weapon, which makes it the finale.</li>
+          </ol>
+          <figure class="map-fig">
+            <img src="images/zombies-map.jpg" alt="Hand-drawn map of the museum">
+            <figcaption>Hand-drawn map of the museum layout.</figcaption>
+          </figure>
+
+          <h4>The main quest</h4>
+          <p>Between rounds, players collect pieces of technology scattered across the museum's side rooms. Put together, they form a weapon powerful enough to destroy the shard. Once the weapon is built, the Research Lab unlocks, and players push through to destroy the shard. Its energy cuts out instantly, and everything that came back to life collapses into bones in front of them.</p>
+
+          <h4>Reward</h4>
+          <p>Players keep the weapon they built for the rest of the game.</p>
+
+          <h4>Hidden story</h4>
+          <p>Audio logs and lab notes hidden around the museum let players piece together what happened. In one, a scientist records that the rock's readings "match nothing on the periodic table." It's a nod for longtime fans, who know exactly what that means.</p>
+
+          <h4>Design notes</h4>
+          <ul>
+            <li><strong>Escalating threat.</strong> Each room introduces a new kind of enemy: slow zombies, then fast raptors in packs, then a giant boss. Players learn each threat before the next one is layered on top.</li>
+            <li><strong>A setting that tells the story.</strong> A museum already has its enemies on display. Players walk past the skeletons and fossils before they wake up, so the danger is visible from the start.</li>
+            <li><strong>Built on existing lore.</strong> Element 115 is what reanimates the dead in Zombies, so the outbreak needs no new explanation. Linking it to Shangri-La rewards longtime players for spotting the connection.</li>
+            <li><strong>Room to move.</strong> The side rooms and the balcony loop keep the map from being a straight corridor, so players always have a way to circle around a horde.</li>
+            <li><strong>A satisfying ending.</strong> Destroying the shard turns every living exhibit back into bones at once. It's a clear, visual payoff that tells players they won.</li>
+          </ul>
+        </div></div></div>
+      </article>
 
       <!-- Your Second Choice -->
       <article class="card reveal">
@@ -705,6 +785,8 @@ goto QandA
   document.querySelectorAll('img, video').forEach(el => {
     const drop = () => {
       const shots = el.closest('.shots');
+      const fig = el.closest('.map-fig');
+      if (fig) { fig.remove(); return; }
       el.remove();
       if (shots && !shots.querySelector('img, video')) shots.remove();
     };
@@ -719,9 +801,9 @@ goto QandA
       }
       drop();
     };
+    el.addEventListener('error', retry);
     if (el.tagName === 'IMG' && el.complete && el.naturalWidth === 0) retry();
     else if (el.tagName === 'VIDEO' && el.error) drop();
-    else el.addEventListener('error', retry);
   });
 
   // Episode script viewer: simple syntax colors + file tabs
