@@ -208,6 +208,11 @@
   .map-fig { margin: 18px 0 0; }
   .map-fig img { width: 100%; border-radius: 10px; border: 1px solid var(--rule); display: block; }
 
+  .shots--compare figure { margin: 0; }
+  .shots--compare img { aspect-ratio: 16 / 10; object-fit: cover; }
+  .shots--compare figcaption { font-size: 15px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .shots--compare figcaption strong { color: var(--ink); }
+
   /* Experience */
   .jobs { display: grid; gap: 0; border-top: 1px solid var(--rule); }
   .job { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
@@ -652,7 +657,7 @@ goto QandA
           <div class="head-text">
             <span class="tag">Browser game · charity: water</span>
             <h3>Sprinkle Saver</h3>
-            <p class="summary">A browser arcade platformer for the charity: water mission, taken from concept to launch on my own.</p>
+            <p class="summary">A browser arcade game made for charity: water's mission, built around water conservation. Guide a butterfly across the flowers without getting its wings wet, and reach the running tap to turn it off.</p>
             <span class="more">Read more <i></i></span>
           </div>
         </button>
@@ -662,6 +667,32 @@ goto QandA
             <dt>Tools</dt><dd>JavaScript, HTML5, CSS</dd>
             <dt>Dates</dt><dd>June – August 2025</dd>
           </dl>
+
+          <h4>Why I made it</h4>
+          <p><strong>charity: water</strong> is a New York nonprofit founded in 2006 that funds clean drinking water projects for people in developing countries. It's known for its 100% model: every dollar the public donates goes directly to water projects, while private supporters cover the organization's operating costs.</p>
+          <p>I wanted a game that supports that mission by getting players to think about the value of water. Clean water is something many people never have to think twice about, and something millions of others walk hours to find. So the whole game is built around water conservation: the goal of every level is to reach a tap that's been left running and turn it off.</p>
+          <p>When you finish a level, the game tells you what that minute meant: <em>"In the minute it took you to complete this level, 5 liters of water could have been wasted if the tap was left running. A drop saved today is a life secured for the future."</em> The message lands because the player has just spent that minute working to save it.</p>
+
+          <h4>How it plays</h4>
+          <ul>
+            <li>Hop the butterfly between five flowers using the arrow keys or WASD, or the on-screen buttons on mobile.</li>
+            <li>Raindrops fall from the clouds at random. Each one that hits the butterfly costs one of three hearts.</li>
+            <li>Complete three laps of the flowers to make the water tap appear, then jump up to turn it off and finish the level.</li>
+            <li>Choose Easy, Normal, or Hard to change how fast the rain falls. A timer and progress bar track each run.</li>
+          </ul>
+
+          <h4>From concept to final game</h4>
+          <div class="shots shots--compare">
+            <figure>
+              <img src="images/sprinkle-concept.png" alt="Early hand-drawn concept of Sprinkle Saver: a butterfly on pink flowers under rain clouds">
+              <figcaption><strong>Early concept.</strong> My first hand-drawn version, laying out the core idea: the butterfly, the flowers, the rain, three hearts, and a level progress bar.</figcaption>
+            </figure>
+            <figure>
+              <img src="images/sprinkle-final.png" alt="Final version of Sprinkle Saver showing the level complete screen">
+              <figcaption><strong>Final game.</strong> The finished version, with polished art, a run timer, and the level-complete screen with its water-saving message.</figcaption>
+            </figure>
+          </div>
+
           <h4>What I did</h4>
           <ul>
             <li>Defined the core gameplay loop and wireframed the levels and UI.</li>
@@ -673,6 +704,277 @@ goto QandA
             <video src="images/sprinkle-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
           </div>
           <a class="btn btn--primary" href="https://emaa99.github.io/Sprinkle-Saver-finalgame/" target="_blank" rel="noopener">Play the game</a>
+          <div class="script-block">
+            <h4>Under the hood: game logic in JavaScript</h4>
+            <p>Two excerpts from the game's code. <strong>The raindrops</strong> spawn from each cloud at random intervals, fall at a speed set by the chosen difficulty, and check for a hit against the butterfly every 40 milliseconds. A hit plays a splash sound and costs a life. <strong>The controls</strong> move the butterfly between flowers, wrap it back to the start when it reaches the end (with a short moment of invincibility so the jump feels fair), and reveal the water tap that ends the level on the final lap.</p>
+            <div class="editor">
+              <div class="editor-bar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <div class="editor-tabs" role="tablist">
+                  <button class="editor-tab active" role="tab" data-src="code-rain" data-lang="js">raindrops.js</button>
+                  <button class="editor-tab" role="tab" data-src="code-controls" data-lang="js">controls.js</button>
+                </div>
+              </div>
+              <div class="editor-body" tabindex="0" aria-label="Sprinkle Saver code excerpt"></div>
+            </div>
+<script type="text/plain" id="code-rain">
+// Start generating raindrops for each cloud at random intervals
+function startRaindrops() {
+  cloudGroups.forEach((cloud, i) => {
+    function spawn() {
+      if (gameOver) return;
+      createRaindrop(i);
+      // Next drop in 0.7s to 2.2s
+      const next = 700 + Math.random() * 1500;
+      setTimeout(spawn, next);
+    }
+    // Delay the first drop by 1.2 seconds for fairness
+    setTimeout(spawn, 1200);
+  });
+}
+
+// ...inside createRaindrop(cloudIndex), after the drop is placed under its cloud:
+
+  // Set fall duration based on difficulty
+  // Easy: super slow, Normal: normal, Hard: fast
+  let fallDuration;
+  if (window.selectedDifficulty === 'Easy') {
+    // Super slow: 2.5s to 3.2s
+    fallDuration = 2500 + Math.random() * 700;
+  } else if (window.selectedDifficulty === 'Hard') {
+    // Maximum speed: 60ms to 100ms
+    fallDuration = 60 + Math.random() * 40;
+  } else {
+    // Normal: 1.0s to 1.7s
+    fallDuration = 1000 + Math.random() * 700;
+  }
+  drop.style.animationDuration = `${fallDuration}ms`;
+
+  // Collision and cleanup logic
+  let collided = false;
+  function checkCollision() {
+    if (gameOver || invincible) return;
+    const dropRect = drop.getBoundingClientRect();
+    const butterflyRect = butterfly.getBoundingClientRect();
+    // Simple box collision
+    if (
+      dropRect.left < butterflyRect.right &&
+      dropRect.right > butterflyRect.left &&
+      dropRect.top < butterflyRect.bottom &&
+      dropRect.bottom > butterflyRect.top
+    ) {
+      if (!collided) {
+        collided = true;
+        // Get butterfly position (center)
+        const flowersRowRect = flowersRow.getBoundingClientRect();
+        const centerX = butterflyRect.left - flowersRowRect.left + butterflyRect.width / 2;
+        const centerY = butterflyRect.top - flowersRowRect.top + butterflyRect.height / 2;
+        showSplash(centerX, centerY);
+        // Play splash sound effect
+        splashSound.currentTime = 0;
+        splashSound.play();
+        loseLife();
+        drop.remove();
+      }
+    }
+  }
+
+  // Check collision every 40ms while falling
+  const collisionInterval = setInterval(() => {
+    if (!document.body.contains(drop)) {
+      clearInterval(collisionInterval);
+      return;
+    }
+    checkCollision();
+  }, 40);
+
+  // Remove drop when animation ends
+  drop.addEventListener('animationend', () => {
+    if (!collided && document.body.contains(drop)) {
+      drop.remove();
+    }
+    clearInterval(collisionInterval);
+  });
+}
+</script>
+<script type="text/plain" id="code-controls">
+function handleKeyDown(e) {
+  // Only move if the game is visible
+  if (gameContainer.style.display === 'none' || isGameOver) return;
+  if (e.repeat) return; // Ignore held-down keys
+
+  // --- Check for level completion on tap ---
+  // If the butterfly is on the tap and the user presses W or ArrowUp
+  if (
+    tapActive &&
+    butterflyIndex === flowerCenters.length - 1 &&
+    (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp')
+  ) {
+    // End the game and show the level complete message
+    isGameOver = true;
+    showGameOverScreen('You Saved Water! Level Complete');
+    return;
+  }
+
+  // Move left
+  if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') {
+    moveButterfly(butterflyIndex - 1);
+  }
+  // Move right
+  if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') {
+    if (butterflyIndex === flowerCenters.length - 1) {
+      if (!tapActive && wraparounds === WRAPAROUNDS_TO_WIN - 1) {
+        // On the third wrap, replace rightmost flower with tap2.png
+        tapActive = true;
+        const rightFlower = flowerGroups[flowerGroups.length - 1];
+        rightFlower.innerHTML = '';
+        const tapImg = document.createElement('img');
+        tapImg.src = 'img/tap2.png';
+        tapImg.alt = 'Water Tap';
+        tapImg.style.width = '150px'; // Bigger tap
+        tapImg.style.height = 'auto';
+        tapImg.style.display = 'block';
+        tapImg.style.margin = '0 auto';
+        tapImg.style.position = 'absolute';
+        tapImg.style.right = '-60px'; // Stick out more from right side
+        tapImg.style.top = '-190px'; // Raise tap up to butterfly eye level
+        tapImg.style.zIndex = '10';
+        tapImg.style.opacity = '0'; // Start invisible
+        tapImg.style.transform = 'translateY(40px) scale(0.7)'; // Start lower and smaller
+        tapImg.style.transition = 'opacity 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)';
+        rightFlower.style.position = 'relative';
+        rightFlower.appendChild(tapImg);
+        // Animate in after a short delay for smoothness
+        setTimeout(() => {
+          tapImg.style.opacity = '1';
+          tapImg.style.transform = 'translateY(0) scale(1)';
+        }, 30);
+      }
+      // If at rightmost flower, loop to leftmost (unless tap is active)
+      if (!tapActive) {
+        // Make butterfly invincible during teleport
+        invincible = true;
+        moveButterfly(0);
+        wraparounds++;
+        progress++;
+        updateProgressBar();
+        // Remove invincibility after short delay
+        setTimeout(() => {
+          invincible = false;
+        }, 400);
+      }
+    } else {
+      moveButterfly(butterflyIndex + 1);
+      progress++;
+      updateProgressBar();
+    }
+  }
+}
+</script>
+          </div>
+        </div></div></div>
+      </article>
+
+      <!-- Bug Bash -->
+      <article class="card reveal">
+        <button class="card-head" aria-expanded="false">
+          <div class="thumb" style="--g: linear-gradient(135deg, #2B8A3E, #111)">
+            <span>BB</span>
+            <img src="images/bugbash.png" alt="">
+          </div>
+          <div class="head-text">
+            <span class="tag">Browser game · Arcade</span>
+            <h3>Bug Bash!</h3>
+            <p class="summary">A fast 30-second arcade game where bugs pop out of holes and you squash as many as you can before time runs out.</p>
+            <span class="more">Read more <i></i></span>
+          </div>
+        </button>
+        <div class="card-body"><div><div class="body-inner">
+          <dl class="meta">
+            <dt>Role</dt><dd>Game designer and developer (solo)</dd>
+            <dt>Tools</dt><dd>JavaScript, HTML, CSS</dd>
+          </dl>
+          <h4>The idea</h4>
+          <p>A "bug bash" is when a game team plays a build together to hunt down as many bugs as possible before release. I turned that idea into a literal arcade game: a twist on whack-a-mole where the moles are bugs and you're the tester squashing them.</p>
+          <h4>How it plays</h4>
+          <ul>
+            <li>Bugs pop up at random in a 4 × 3 grid of holes, a new one every 0.6 seconds.</li>
+            <li>Each bug only stays for one second, so players have to react quickly. Every squash is worth 10 points and leaves a 💥 splat.</li>
+            <li>The round lasts 30 seconds, then the final score is shown.</li>
+          </ul>
+          <h4>Design choices</h4>
+          <ul>
+            <li><strong>One simple rule.</strong> Click the bug. Anyone understands it in a second, so the challenge comes entirely from speed and focus.</li>
+            <li><strong>Tuned timing.</strong> A new bug every 0.6 seconds that disappears after 1 second means up to two bugs can be on screen at once, enough to feel hectic without becoming impossible.</li>
+            <li><strong>Instant feedback.</strong> Bugs pop in with a quick scale animation, and every hit gets a splat and a score update right away, so each click feels satisfying.</li>
+          </ul>
+          <a class="btn btn--primary" href="https://emaantovska.github.io/bug-bash/" target="_blank" rel="noopener">Play the game</a>
+          <div class="script-block">
+            <h4>Under the hood: spawning and scoring</h4>
+            <p>The core loop of the game. Two timers run the round: one counts down the clock, and one tries to spawn a bug in a random hole. It skips holes that are already occupied, removes each bug after a second if it isn't hit, and adds points with a splat effect when it is.</p>
+            <div class="editor">
+              <div class="editor-bar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <div class="editor-tabs" role="tablist">
+                  <button class="editor-tab active" role="tab" data-src="code-bugbash" data-lang="js">bug_bash.js</button>
+                </div>
+              </div>
+              <div class="editor-body" tabindex="0" aria-label="Bug Bash code excerpt"></div>
+            </div>
+<script type="text/plain" id="code-bugbash">
+function startGame() {
+  gameInterval = setInterval(updateTimer, 1000);
+  bugInterval = setInterval(showRandomBug, 600);
+}
+
+function updateTimer() {
+  timeLeft--;
+  timerDisplay.textContent = `Time: ${timeLeft}`;
+  if (timeLeft <= 0) {
+    endGame();
+  }
+}
+
+function showRandomBug() {
+  if (!gameActive) return;
+
+  const index = Math.floor(Math.random() * holes.length);
+  const hole = holes[index];
+
+  if (hole.innerHTML !== '') return; // Skip if already occupied
+
+  const bug = document.createElement('div');
+  bug.classList.add('bug');
+  bug.textContent = '🐛';
+  hole.appendChild(bug);
+
+  bug.addEventListener('click', () => {
+    if (!gameActive) return;
+    score += 10;
+    scoreDisplay.textContent = `Score: ${score}`;
+    bug.remove();
+
+    const splat = document.createElement('div');
+    splat.classList.add('squashed');
+    splat.textContent = '💥';
+    hole.appendChild(splat);
+    setTimeout(() => hole.innerHTML = '', 500);
+  });
+
+  setTimeout(() => {
+    if (hole.contains(bug)) hole.innerHTML = '';
+  }, 1000);
+}
+
+function endGame() {
+  clearInterval(gameInterval);
+  clearInterval(bugInterval);
+  gameActive = false;
+  gameOverDisplay.style.display = 'block';
+  finalScoreDisplay.textContent = score;
+}
+</script>
+          </div>
         </div></div></div>
       </article>
 
@@ -829,7 +1131,7 @@ goto QandA
   document.querySelectorAll('img, video').forEach(el => {
     const drop = () => {
       const shots = el.closest('.shots');
-      const fig = el.closest('.map-fig');
+      const fig = el.closest('.map-fig') || el.closest('.shots--compare figure');
       if (fig) { fig.remove(); return; }
       el.remove();
       if (shots && !shots.querySelector('img, video')) shots.remove();
@@ -870,23 +1172,42 @@ goto QandA
     if (/^(sound|music)\b/.test(t)) h = h.replace(/^(\s*)(\w+)/, '$1<span class="tk-cmd">$2</span>');
     return h;
   };
+  // Simple JavaScript colors for the Sprinkle Saver code
+  const JS_KW = /\b(const|let|var|function|return|if|else|for|of|in|new|true|false|null|undefined|this|typeof)\b/g;
+  const highlightJS = raw => {
+    if (!raw.trim()) return '';
+    const ci = raw.indexOf('//');
+    let code = raw, comment = '';
+    if (ci !== -1 && !/['"`][^'"`]*\/\//.test(raw.slice(0, ci + 2))) { code = raw.slice(0, ci); comment = raw.slice(ci); }
+    const parts = code.split(/('(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|"(?:[^"\\]|\\.)*")/);
+    const out = parts.map((part, i) => {
+      if (i % 2) return `<span class="tk-str">${esc(part)}</span>`;
+      return esc(part)
+        .replace(JS_KW, '<span class="tk-kw">$1</span>')
+        .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tk-num">$1</span>')
+        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="tk-cmd">$1</span>');
+    }).join('');
+    return out + (comment ? `<span class="tk-comment">${esc(comment)}</span>` : '');
+  };
   document.querySelectorAll('.editor').forEach(ed => {
     const body = ed.querySelector('.editor-body');
-    const show = id => {
+    const show = (id, lang) => {
       const src = document.getElementById(id);
       if (!src) return;
       const lines = src.textContent.replace(/^\n+|\s+$/g, '').split('\n');
-      body.innerHTML = lines.map(l => `<span class="ln">${highlightLine(l) || ' '}</span>`).join('');
+      const hl = lang === 'js' ? highlightJS : highlightLine;
+      body.innerHTML = lines.map(l => `<span class="ln">${hl(l) || ' '}</span>`).join('');
       body.scrollTop = 0;
     };
     ed.querySelectorAll('.editor-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         ed.querySelectorAll('.editor-tab').forEach(t => t.classList.toggle('active', t === tab));
         body.classList.add('fading');
-        setTimeout(() => { show(tab.dataset.src); body.classList.remove('fading'); }, 180);
+        setTimeout(() => { show(tab.dataset.src, tab.dataset.lang); body.classList.remove('fading'); }, 180);
       });
     });
-    show(ed.querySelector('.editor-tab.active').dataset.src);
+    const first = ed.querySelector('.editor-tab.active');
+    show(first.dataset.src, first.dataset.lang);
   });
 
   // Expand / collapse project cards
