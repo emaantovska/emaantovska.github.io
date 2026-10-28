@@ -353,8 +353,8 @@
     <p class="section-note reveal">My concept for a new Call of Duty Zombies experience: the story, the map, the enemies, and the main quest.</p>
     <div class="projects">
       <!-- Zombies concept -->
-      <article class="card card--feature open reveal" id="zombies-card">
-        <button class="card-head" aria-expanded="true">
+      <article class="card card--feature reveal" id="zombies-card">
+        <button class="card-head" aria-expanded="false">
           <div class="thumb" style="--g: linear-gradient(135deg, #2B8A3E, #0B3D1E 70%, #000)">
             <span>Z</span>
             <img src="images/zombies-cover.jpg" alt="">
@@ -363,7 +363,7 @@
             <span class="tag">Original Zombies map concept · Design document</span>
             <h3>Exhibit Z</h3>
             <p class="summary">A glowing crystal dug up from the ruins of Shangri-La is sent to a natural history museum for study. Nobody realizes it's Element 115, until a lab accident supercharges it and every fossil in the building comes back to life.</p>
-            <span class="more">Close <i></i></span>
+            <span class="more">Read more <i></i></span>
           </div>
         </button>
         <div class="card-body"><div><div class="body-inner">
@@ -908,6 +908,9 @@ function handleKeyDown(e) {
             <li><strong>Tuned timing.</strong> A new bug every 0.6 seconds that disappears after 1 second means up to two bugs can be on screen at once, enough to feel hectic without becoming impossible.</li>
             <li><strong>Instant feedback.</strong> Bugs pop in with a quick scale animation, and every hit gets a splat and a score update right away, so each click feels satisfying.</li>
           </ul>
+          <div class="shots">
+            <video src="images/bugbash-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          </div>
           <a class="btn btn--primary" href="https://emaantovska.github.io/bug-bash/" target="_blank" rel="noopener">Play the game</a>
           <div class="script-block">
             <h4>Under the hood: spawning and scoring</h4>
