@@ -201,6 +201,8 @@
   .shots--art { grid-template-columns: repeat(3, 1fr); }
   .shots--art img { aspect-ratio: 4 / 3; object-fit: cover; }
   .map-fig figcaption { font-size: 15px; color: var(--muted); margin-top: 8px; }
+  .step { font: 700 16px var(--display); margin: 20px 0 6px; color: var(--ink); }
+  .step span { display: block; font: 500 13px var(--display); letter-spacing: .06em; text-transform: uppercase; color: #8CE99A; margin-top: 2px; }
   .flow { margin: 0; padding-left: 22px; }
   .flow li { margin-bottom: 8px; }
   .map-fig { margin: 18px 0 0; }
@@ -317,6 +319,7 @@
   <div class="wrap">
     <a class="brand" href="#">Ema Antovska</a>
     <nav>
+      <a href="#zombies">Zombies</a>
       <a href="#projects">Projects</a>
       <a href="#experience" class="hide-sm">Experience</a>
       <a href="resume.pdf" target="_blank" rel="noopener">Resume</a>
@@ -331,37 +334,38 @@
     <h1>Hi, I'm Ema.</h1>
     <p class="lede">I'm a junior at <strong>Columbia University</strong> studying Financial Economics with a minor in Computer Science. I make games and interactive stories, and I love the part where an idea becomes something people can actually play: planning it, building it, testing it with players, and fixing what they run into.</p>
     <div class="buttons">
-      <a class="btn btn--primary" href="#projects">See my projects</a>
+      <a class="btn btn--primary" href="#zombies">See my Zombies pitch</a>
+      <a class="btn" href="#projects">Projects</a>
       <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
       <a class="btn" href="mailto:emaantovska2005@gmail.com">Email</a>
       <a class="btn" href="https://www.linkedin.com/in/emaantovska" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </section>
 
-  <section id="projects">
-    <h2 class="reveal">Projects</h2>
-    <p class="section-note reveal">Click a project to read more.</p>
-
+  <section id="zombies">
+    <p class="eyebrow reveal">Zombies design pitch</p>
+    <h2 class="reveal">Exhibit Z: an original Zombies map and main quest</h2>
+    <p class="section-note reveal">My concept for a new Call of Duty Zombies experience: the story, the map, the enemies, and the main quest.</p>
     <div class="projects">
-
       <!-- Zombies concept -->
-      <article class="card card--feature reveal" id="zombies">
-        <button class="card-head" aria-expanded="false">
+      <article class="card card--feature open reveal" id="zombies-card">
+        <button class="card-head" aria-expanded="true">
           <div class="thumb" style="--g: linear-gradient(135deg, #2B8A3E, #0B3D1E 70%, #000)">
             <span>Z</span>
             <img src="images/zombies-cover.jpg" alt="">
           </div>
           <div class="head-text">
             <span class="tag">Original Zombies map concept · Design document</span>
-            <h3>Fossil Record</h3>
-            <p class="summary">A glowing rock dug up from the ruins of Shangri-La is sent to a natural history museum for study. Nobody realizes it's Element 115, until a lab accident supercharges it and every fossil in the building comes back to life.</p>
-            <span class="more">Read more <i></i></span>
+            <h3>Exhibit Z</h3>
+            <p class="summary">A glowing crystal dug up from the ruins of Shangri-La is sent to a natural history museum for study. Nobody realizes it's Element 115, until a lab accident supercharges it and every fossil in the building comes back to life.</p>
+            <span class="more">Close <i></i></span>
           </div>
         </button>
         <div class="card-body"><div><div class="body-inner">
           <dl class="meta">
             <dt>Type</dt><dd>Original Zombies map and main quest concept</dd>
             <dt>Players</dt><dd>1–4, co-op</dd>
+            <dt>Opening</dt><dd>"The Unveiling," the night the crystal goes on display</dd>
             <dt>Setting</dt><dd>A natural history museum on the night it unveils a mysterious "healing stone" from Shangri-La</dd>
           </dl>
 
@@ -372,12 +376,16 @@
           </div>
 
           <h4>The story</h4>
-          <p>Years after the events of Shangri-La, an archaeological team excavating the ruins of the hidden jungle temple uncovers a strange glowing rock buried in the rubble. It's a leftover shard of the Element 115 meteor, but nobody on the team knows that. To them, it's an unidentified mineral that gives off a faint, steady energy.</p>
+          <p>Years after the events of Shangri-La, an archaeological team excavating the ruins of the hidden jungle temple uncovers a strange glowing purple crystal buried in the rubble. It's a leftover shard of the Element 115 meteor, but nobody on the team knows that. To them, it's an unidentified mineral that gives off a faint, steady energy.</p>
+          <figure class="map-fig">
+            <img src="images/zombies-discovery.png" alt="Concept art: archaeologists uncover the glowing crystal in the Shangri-La temple ruins while armed operatives stand guard">
+            <figcaption>The discovery: archaeologists uncover the crystal in the temple ruins, watched by operatives who know exactly what it is.</figcaption>
+          </figure>
           <p>The discovery makes headlines around the world, and the media starts calling it a "healing stone." The shard is shipped to a natural history museum, which plans a grand public unveiling.</p>
-          <p>One group does know what the rock really is: a secret organization that has been tracking Element 115 for years. It quietly places its own team inside the museum's security detail for the unveiling, with orders to protect the shard and keep it out of the wrong hands. The players are that team.</p>
+          <p>One group does know what the crystal really is: a secret organization that has been tracking Element 115 for years. Its operatives were already at the dig, posing as site security. When the crystal moves to the museum, the organization quietly places the same team inside the museum's security detail for the unveiling, with orders to protect the shard and keep it out of the wrong hands. The players are that team.</p>
           <p>On unveiling night, with the museum packed with guests, something goes wrong in the research lab. A piece of equipment malfunctions and fires straight into the shard. Nothing seems to happen at first. But the Element 115 has been supercharged, and its energy spreads through the museum, waking up every fossil and skeleton in the building. Bone grows flesh again, the exhibits start to move, and the guests begin to turn.</p>
           <p>The team knows exactly what this means. Rather than let the outbreak reach the city, they seal the museum from the inside, locking themselves in with it. Their only way out is to fight through to the lab and destroy the shard.</p>
-          <p>Zombies fans will recognize the glowing rock the moment they see it. The scientists and guests have no idea what they've brought inside, but the players and their team do. That gap is what makes the opening tense.</p>
+          <p>Zombies fans will recognize the glowing crystal the moment they see it. The scientists and guests have no idea what they've brought inside, but the players and their team do. That gap is what makes the opening tense.</p>
 
           <h4>Map layout</h4>
           <p>Players fight their way from the museum entrance to the lab where it all started. The four main rooms form the main path, and each one introduces a bigger, more dangerous threat. As in any Zombies map, players buy doors with points to open new areas. Side rooms branch off the main path for perks, the Mystery Box, and quest items, and loops let players circle the map instead of getting trapped in a dead end.</p>
@@ -385,7 +393,7 @@
             <li><strong>Entrance Hall.</strong> The starting room. Human skeletons from the anthropology exhibits have been reanimated as zombies. A side door leads to the <em>Security Office</em>.</li>
             <li><strong>Raptor Gallery.</strong> A bigger hall where raptors burst out of their displays. They are faster than zombies and attack in packs. Above them, pterosaur skeletons hang from the ceiling on display wires. In later rounds they tear free and dive at players from above, so players have to watch the ground and the air at the same time. Side rooms: the <em>Gift Shop</em> and the <em>Fossil Prep Room</em>.</li>
             <li><strong>Great Hall.</strong> The museum's centerpiece room, home to a towering T. rex skeleton, with the <em>Planetarium</em> off to one side. An upper balcony loops all the way around the T. rex, so players can keep moving during the boss fight. This is where the T. rex comes to life, with raptors attacking alongside it.</li>
-            <li><strong>Research Lab.</strong> The source of the outbreak, where the supercharged shard is kept. It stays sealed until players have built the weapon, which makes it the finale.</li>
+            <li><strong>Research Lab.</strong> The source of the outbreak, where the supercharged shard is kept. It stays sealed until players have defeated the T. rex, which makes it the finale.</li>
           </ol>
           <figure class="map-fig">
             <img src="images/zombies-map.jpg" alt="Hand-drawn map of the museum">
@@ -393,13 +401,35 @@
           </figure>
 
           <h4>The main quest</h4>
-          <p>Between rounds, players collect pieces of technology scattered across the museum's side rooms. Put together, they form a weapon powerful enough to destroy the shard. Once the weapon is built, the Research Lab unlocks, and players push through to destroy the shard. Its energy cuts out instantly, and everything that came back to life collapses into bones in front of them.</p>
+          <p>The main quest runs alongside the rounds. Players gather three pieces of technology, each guarded by a different puzzle, assemble them into a weapon, use it to bring down the T. rex, and finally destroy the shard.</p>
+
+          <h5 class="step">Step 1 · The security feeds <span>Entrance Hall → Security Office</span></h5>
+          <p>The first piece is locked inside one of the museum's display cases, but the outbreak knocked out the power. Players restore power to the Security Office, then watch the camera feeds to spot which exhibit case is glowing. They have to remember it, run back out into the horde, and open the right case.</p>
+
+          <h5 class="step">Step 2 · Cut the wires <span>Raptor Gallery</span></h5>
+          <p>The second piece is caught on a pterosaur skeleton that is still hanging from the ceiling. Players shoot through its display wires to bring it crashing down and grab the piece. The fall wakes the pterosaur, so the reward comes with a new threat diving at them from above.</p>
+
+          <h5 class="step">Step 3 · Align the stars <span>Planetarium</span></h5>
+          <p>Players switch on the planetarium projector and rotate the night sky until the constellations line up with symbols carved into the Shangri-La temple, which players can spot on the photos and replicas in the unveiling exhibit. When the stars match, a hidden panel opens with the final piece. It rewards players who paid attention to the museum around them.</p>
+
+          <h5 class="step">Step 4 · Build the Carbon Dater <span>Fossil Prep Room</span></h5>
+          <p>Players bring all three pieces to the workbench in the Fossil Prep Room and use the museum's equipment to assemble the <strong>Carbon Dater</strong>. Instead of measuring a fossil's age, it forces it back: anything it hits is reduced to its original bones.</p>
+
+          <h5 class="step">Step 5 · Bring down the T. rex <span>Great Hall · boss fight</span></h5>
+          <ol class="flow">
+            <li><strong>Phase 1: Weak spots.</strong> The T. rex wakes up in the Great Hall. Players run the balcony loop around it, shooting the glowing purple weak spots on its ribs while raptors chase them.</li>
+            <li><strong>Phase 2: The chandelier.</strong> Once enraged, the T. rex is too strong to fight head-on. Players have to lure it under the giant chandelier and drop it to stun it.</li>
+            <li><strong>Phase 3: Back to bone.</strong> While the T. rex is stunned, players blast it with the Carbon Dater, turning it back into a skeleton. With the guardian down, the Research Lab finally unseals.</li>
+          </ol>
+
+          <h5 class="step">Step 6 · Destroy the shard <span>Research Lab · finale</span></h5>
+          <p>Players push into the lab and destroy the shard with the Carbon Dater. Its energy cuts out instantly, and every creature that came back to life collapses into bones in front of them.</p>
 
           <h4>Reward</h4>
-          <p>Players keep the weapon they built for the rest of the game.</p>
+          <p>Players keep the Carbon Dater for the rest of the game.</p>
 
           <h4>Hidden story</h4>
-          <p>Audio logs and lab notes hidden around the museum let players piece together what happened. In one, a scientist records that the rock's readings "match nothing on the periodic table." It's a nod for longtime fans, who know exactly what that means.</p>
+          <p>Audio logs and lab notes hidden around the museum let players piece together what happened. In one, a scientist records that the crystal's readings "match nothing on the periodic table." It's a nod for longtime fans, who know exactly what that means.</p>
 
           <h4>Design notes</h4>
           <ul>
@@ -408,11 +438,21 @@
             <li><strong>A setting that tells the story.</strong> A museum already has its enemies on display. Players walk past the skeletons and fossils before they wake up, so the danger is visible from the start.</li>
             <li><strong>Built on existing lore.</strong> Element 115 is what reanimates the dead in Zombies, so the outbreak needs no new explanation. Linking it to Shangri-La rewards longtime players for spotting the connection.</li>
             <li><strong>Room to move.</strong> The side rooms and the balcony loop keep the map from being a straight corridor, so players always have a way to circle around a horde.</li>
-            <li><strong>A reason to stay and fight.</strong> The players seal themselves in on purpose, so the locked doors and the push toward the lab come from the story, not just the rules of the mode. It also explains why they know how to build a weapon that can destroy the shard.</li>
-            <li><strong>A satisfying ending.</strong> Destroying the shard turns every living exhibit back into bones at once. It's a clear, visual payoff that tells players they won.</li>
+            <li><strong>A reason to stay and fight.</strong> The players seal themselves in on purpose, so the locked doors and the push toward the lab come from the story, not just the rules of the mode. It also explains why they know how to build the Carbon Dater.</li>
+            <li><strong>Every puzzle uses the museum.</strong> Security cameras, hanging skeletons, and a planetarium are all things a real museum has, so each step feels like part of the place rather than a puzzle dropped into it.</li>
+            <li><strong>Puzzles that test different skills.</strong> The security feeds test memory under pressure, the wires test aim, and the star map tests observation. The T. rex then brings them together: aim, positioning, and teamwork to lure it under the chandelier.</li>
+            <li><strong>A satisfying ending.</strong> Destroying the shard turns every living exhibit back into bones at once, the same effect the Carbon Dater has had on each enemy, now on the whole museum. It's a clear, visual payoff that tells players they won.</li>
           </ul>
         </div></div></div>
       </article>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="reveal">Projects</h2>
+    <p class="section-note reveal">Click a project to read more.</p>
+
+    <div class="projects">
 
       <!-- Your Second Choice -->
       <article class="card reveal">
