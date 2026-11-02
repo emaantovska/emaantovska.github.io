@@ -428,6 +428,55 @@
     .card--feature .summary { font-size: 16px; }
   }
   @media (prefers-reduced-motion: reduce) { .hero-photo::before { animation: none; } }
+
+  /* ===== Project tiles: whole picture visible, opens in a window ===== */
+  #projects .card.open { grid-column: auto; }
+  #projects .thumb { aspect-ratio: 16 / 10; background: var(--g); }
+  #projects .thumb::before {
+    content: ""; position: absolute; inset: -20px;
+    background: var(--thumb-bg, none) center / cover no-repeat;
+    filter: blur(22px) brightness(.55) saturate(1.2);
+  }
+  #projects .thumb img { object-fit: contain; padding: 14px; z-index: 1; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .5)); }
+  #projects .thumb::after { z-index: 2; background: linear-gradient(180deg, transparent 70%, rgba(18, 29, 51, .6)); }
+  #projects .thumb span { z-index: 1; }
+  #projects .card:hover .thumb img { transform: scale(1.03); }
+  #projects .card-body { display: none; }
+  #projects .more i { transform: rotate(-45deg); }
+
+  .project-modal {
+    width: min(960px, calc(100% - 24px)); max-height: 92vh; padding: 0; border: 1px solid var(--rule);
+    border-radius: 22px; background: var(--panel); color: var(--ink); overflow: hidden;
+    box-shadow: 0 40px 120px -20px rgba(0, 0, 0, .9);
+    animation: modalIn .32s var(--ease);
+  }
+  .project-modal::backdrop { background: rgba(5, 9, 18, .72); backdrop-filter: blur(6px); animation: fadeIn .3s ease; }
+  .project-modal.closing { animation: modalOut .22s ease forwards; }
+  .project-modal.closing::backdrop { animation: fadeOut2 .22s ease forwards; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes modalOut { to { opacity: 0; transform: translateY(16px) scale(.98); } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  @keyframes fadeOut2 { to { opacity: 0; } }
+  .modal-scroll { max-height: 92vh; overflow-y: auto; overscroll-behavior: contain; }
+  .modal-scroll::-webkit-scrollbar { width: 10px; }
+  .modal-scroll::-webkit-scrollbar-thumb { background: #2A3D63; border-radius: 10px; }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; z-index: 3; width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .25); background: rgba(11, 19, 34, .7); color: #fff;
+    font-size: 26px; line-height: 1; cursor: pointer; backdrop-filter: blur(6px); transition: background .2s, transform .2s;
+  }
+  .modal-close:hover { background: var(--accent); color: #0B1322; transform: rotate(90deg); }
+  .modal-hero { background: #070C16; display: grid; place-items: center; max-height: 46vh; overflow: hidden; }
+  .modal-hero img { display: block; max-width: 100%; max-height: 46vh; object-fit: contain; }
+  .modal-head { padding: 26px 32px 0; display: flex; flex-direction: column; gap: 6px; }
+  .modal-head h3 { font: 700 clamp(26px, 4vw, 36px) var(--display); margin: 0; letter-spacing: -.02em; }
+  .modal-body .body-inner { opacity: 1; transform: none; border-top: 0; padding: 6px 32px 34px; }
+  @media (max-width: 640px) {
+    .project-modal { width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
+    .modal-scroll { max-height: 100vh; }
+    .modal-head { padding: 22px 20px 0; }
+    .modal-body .body-inner { padding: 6px 20px 28px; }
+  }
 </style>
 </head>
 <body>
@@ -484,7 +533,7 @@
       <figure class="hero-photo reveal">
         <div class="hero-photo-frame">
           <span class="hero-initials">EA</span>
-          <img src="images/me.JPG" alt="Ema Antovska">
+          <img src="images/me.jpg" alt="Ema Antovska">
         </div>
       </figure>
     </div>
@@ -524,17 +573,16 @@
           </div>
 
           <h4>The story</h4>
-          <p>Years after the events of Shangri-La, an archaeological team excavating the ruins of the hidden jungle temple uncovers a strange glowing purple crystal buried in the rubble. It's a leftover shard of the Element 115 meteor, but nobody on the team knows that. To them, it's an unidentified mineral that gives off a faint, steady energy.</p>
+          <p>Years after the events of Shangri-La, an archaeological team excavating the ruins of the hidden jungle temple uncovers a strange glowing crystal buried in the rubble. It's a leftover shard of the Element 115 meteor, but nobody on the team knows that. To them, it's an unidentified mineral that gives off a faint, steady energy.</p>
           <figure class="map-fig">
             <img src="images/zombies-discovery.png" alt="Concept art: archaeologists uncover the glowing crystal in the Shangri-La temple ruins while armed operatives stand guard">
             <figcaption>The discovery: archaeologists uncover the crystal in the temple ruins, watched by operatives who know exactly what it is.</figcaption>
           </figure>
           <p>The discovery makes headlines around the world, and the media starts calling it a "healing stone." The shard is shipped to a natural history museum, which plans a grand public unveiling.</p>
-          <p>One group does know what the crystal really is: a secret organization that has been tracking Element 115 for years. Its operatives were already at the dig, posing as site security. When the crystal moves to the museum, the organization quietly places the same team inside the museum's security detail for the unveiling, with orders to protect the shard and keep it out of the wrong hands. The players are that team.</p>
-          <p>On unveiling night, with the museum packed with guests, something goes wrong in the research lab. A piece of equipment malfunctions and fires straight into the shard. Nothing seems to happen at first. But the Element 115 has been supercharged, and its energy spreads through the museum, waking up every fossil and skeleton in the building. Bone grows flesh again, the exhibits start to move, and the guests begin to turn.</p>
+          <p>The popularity of the stone attracts the attention of a secret organization that know what the crystal really is. They have been tracking Element 115 for years. When the crystal moves to the museum, the organization quietly places specialized operatives inside the museum's security detail for the unveiling, with orders to protect the shard and keep it out of the wrong hands. The players are that team.</p>
+          <p>On unveiling night, with the museum packed with guests, something goes wrong in the research lab. A piece of equipment malfunctions and fires straight into the shard. Nothing seems to happen at first. But Element 115 has been supercharged, and its energy spreads through the museum, waking up every fossil and skeleton in the building. Bone grows flesh again, the exhibits come to life, and the guests begin to notice.</p>
           <p>The team knows exactly what this means. Rather than let the outbreak reach the city, they seal the museum from the inside, locking themselves in with it. Their only way out is to fight through to the lab and destroy the shard.</p>
-          <p>Zombies fans will recognize the glowing crystal the moment they see it. The scientists and guests have no idea what they've brought inside, but the players and their team do. That gap is what makes the opening tense.</p>
-
+          
           <h4>Map layout</h4>
           <p>Players fight their way from the museum entrance to the lab where it all started. The four main rooms form the main path, and each one introduces a bigger, more dangerous threat. As in any Zombies map, players buy doors with points to open new areas. Side rooms branch off the main path for perks, the Mystery Box, and quest items, and loops let players circle the map instead of getting trapped in a dead end.</p>
           <ol class="flow">
@@ -1232,6 +1280,19 @@ function endGame() {
 
 </main>
 
+<dialog class="project-modal" id="projectModal" aria-label="Project details">
+  <button class="modal-close" type="button" aria-label="Close">&times;</button>
+  <div class="modal-scroll">
+    <div class="modal-hero"><img alt=""></div>
+    <div class="modal-head">
+      <span class="tag"></span>
+      <h3></h3>
+      <p class="summary"></p>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</dialog>
+
 <footer>
   <div class="wrap">
     <div class="cta reveal">
@@ -1240,6 +1301,7 @@ function endGame() {
       <div class="buttons">
         <a class="btn btn--primary" href="mailto:emaantovska2005@gmail.com">emaantovska2005@gmail.com</a>
         <a class="btn" href="https://www.linkedin.com/in/emaantovska" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/emaantovska" target="_blank" rel="noopener">Github</a>
         <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
       </div>
     </div>
@@ -1287,7 +1349,7 @@ function endGame() {
   })();
 
   // Hide any picture or video that hasn't been uploaded yet (the colored tile with initials shows instead)
-  document.querySelectorAll('img, video').forEach(el => {
+  document.querySelectorAll('img[src], video[src]').forEach(el => {
     const drop = () => {
       const shots = el.closest('.shots');
       const fig = el.closest('.map-fig') || el.closest('.shots--compare figure');
@@ -1374,10 +1436,55 @@ function endGame() {
     show(first.dataset.src, first.dataset.lang);
   });
 
-  // Expand / collapse project cards
+  // Projects open in a pop-up window; the Zombies pitch expands in place
+  const modal = document.getElementById('projectModal');
+  let modalCard = null;
+  const openModal = card => {
+    const inner = card.querySelector('.body-inner');
+    const img = card.querySelector('.thumb img');
+    const heroImg = modal.querySelector('.modal-hero img');
+    if (img && img.complete && img.naturalWidth) { heroImg.src = img.currentSrc || img.src; modal.querySelector('.modal-hero').hidden = false; }
+    else { modal.querySelector('.modal-hero').hidden = true; }
+    modal.querySelector('.modal-head .tag').textContent = card.querySelector('.tag').textContent;
+    modal.querySelector('.modal-head h3').textContent = card.querySelector('h3').textContent;
+    modal.querySelector('.modal-head .summary').textContent = card.querySelector('.summary').textContent;
+    modal.querySelector('.modal-body').appendChild(inner);   // move the details in (videos and code keep working)
+    modalCard = card;
+    modal.showModal();
+    modal.querySelector('.modal-scroll').scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  };
+  const closeModal = () => {
+    if (!modal.open) return;
+    modal.classList.add('closing');
+    setTimeout(() => { modal.classList.remove('closing'); modal.close(); }, 220);
+  };
+  modal.addEventListener('close', () => {
+    if (modalCard) {
+      const inner = modal.querySelector('.modal-body .body-inner');
+      if (inner) modalCard.querySelector('.card-body > div').appendChild(inner);  // put the details back
+      modalCard.querySelector('.card-head').focus({ preventScroll: true });
+      modalCard = null;
+    }
+    document.body.style.overflow = '';
+  });
+  modal.querySelector('.modal-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  modal.addEventListener('cancel', e => { e.preventDefault(); closeModal(); });
+
+  document.querySelectorAll('#projects .card .more').forEach(m => m.firstChild.textContent = 'View project ');
+
+  // Blurred backdrop behind each tile picture, so pictures of any shape fit without being cropped
+  document.querySelectorAll('#projects .thumb img').forEach(img => {
+    const setBg = () => { if (img.naturalWidth) img.closest('.thumb').style.setProperty('--thumb-bg', `url("${img.currentSrc || img.src}")`); };
+    if (img.complete) setBg();
+    img.addEventListener('load', setBg);
+  });
+
   document.querySelectorAll('.card-head').forEach(head => {
     head.addEventListener('click', () => {
       const card = head.closest('.card');
+      if (card.closest('#projects')) { openModal(card); return; }
       const open = !card.classList.contains('open');
       card.classList.toggle('open', open);
       head.setAttribute('aria-expanded', open);
